@@ -26,42 +26,64 @@ require_once($CFG->dirroot . '/mod/facetoface/lib.php');
 
 class block_courseinfo extends block_list {
 
-    function init() {
+    /**
+     * Block initialization
+     */
+    public function init() {
         $this->title = get_string('pluginname', 'block_courseinfo');
     }
 
-    function has_config() {
+    /**
+     * Allow the block to have a configuration page
+     *
+     * @return boolean
+     */
+    public function has_config() {
         return true;
     }
 
-    function applicable_formats() {
+    /**
+     * Locations where block can be displayed
+     *
+     * @return array
+     */
+    public function applicable_formats() {
         return array(
             'course-view' => true,
         );
     }
 
-    function specialization() {
+    /**
+     * Customisze block title
+     */
+    public function specialization() {
         $this->title = get_string('blocktitle', 'block_courseinfo');
     }
 
-    function instance_allow_multiple() {
+    /**
+     * Allows multiple instances of this block to a page
+     */
+    public function instance_allow_multiple() {
         return true;
     }
 
-    function get_content() {
-        global $CFG, $DB, $PAGE, $COURSE;
-        if(!isset($COURSE->id)) {
+    /**
+     * Return contents of courseinfo block
+     *
+     * @return stdClass contents of block
+     */
+    public function get_content() {
+        global $COURSE;
+        if (!isset($COURSE->id)) {
             return null;
         }
-        if ($this->content !== NULL) {
+        if ($this->content !== null) {
             return $this->content;
         }
         $tableprefix = 'course';
         $prefix = 'course';
         $params = array();
         $fields = customfield_get_fields_definition($tableprefix, $params);
-
-
 
         $this->content = new stdClass;
         $this->content->footer = '';
