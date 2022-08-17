@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Form for editing Course info block
  *
@@ -50,7 +49,6 @@ class block_courseinfo_edit_form extends block_edit_form {
             if (!$formfield->is_hidden() && !$formfield->is_empty()) {
                 $options[$formfield->field->shortname] = format_string($formfield->field->fullname);
             }
-            
         }
         $default = get_config('block_courseinfo', 'defaultfields');
         $final = explode(',', $default);

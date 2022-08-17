@@ -34,7 +34,6 @@ if ($ADMIN->fulltree) {
     foreach ($fields as $field) {
         $formfield = customfield_get_field_instance($COURSE, $field, $tableprefix, $prefix);
         $options[$formfield->field->shortname] = format_string($formfield->field->fullname);
-        
     }
     $settings->add(
         new admin_setting_configmultiselect(
@@ -45,9 +44,6 @@ if ($ADMIN->fulltree) {
             $options
         )
     );
-    
-    /*$settings->add(new admin_setting_configcheckbox('block_html_allowcssclasses', get_string('allowadditionalcssclasses', 'block_html'),
-                       get_string('configallowadditionalcssclasses', 'block_html'), 0));*/
 }
 
 

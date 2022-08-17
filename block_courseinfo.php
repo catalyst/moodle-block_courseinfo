@@ -26,53 +26,70 @@ require_once($CFG->dirroot . '/mod/facetoface/lib.php');
 
 class block_courseinfo extends block_list {
 
-    function init() {
+    /**
+     * Block initialization
+     */
+    public function init() {
         $this->title = get_string('pluginname', 'block_courseinfo');
     }
 
-    function has_config() {
+    /**
+     * Allow the block to have a configuration page
+     *
+     * @return boolean
+     */
+    public function has_config() {
         return true;
     }
 
- 
-    // function instance_config_save($data, $nolongerused = false) {
-    //     var_dump($data);
-    //     die;
-    // }
-
-    function applicable_formats() {
+    /**
+     * Locations where block can be displayed
+     *
+     * @return array
+     */
+    public function applicable_formats() {
         return array(
             'course-view' => true,
         );
     }
 
-    function specialization() {
+    /**
+     * Customisze block title
+     */
+    public function specialization() {
         $this->title = get_string('blocktitle', 'block_courseinfo');
     }
 
-    function instance_allow_multiple() {
+    /**
+     * Allows multiple instances of this block to a page
+     */
+    public function instance_allow_multiple() {
         return true;
     }
 
-    function get_content() {
-        global $CFG, $DB, $PAGE, $COURSE;
-        if(!isset($COURSE->id)) {
+    /**
+     * Return contents of courseinfo block
+     *
+     * @return stdClass contents of block
+     */
+    public function get_content() {
+        global $COURSE;
+        if (!isset($COURSE->id)) {
             return null;
+        }
+        if ($this->content !== null) {
+            return $this->content;
         }
         $tableprefix = 'course';
         $prefix = 'course';
         $params = array();
         $fields = customfield_get_fields_definition($tableprefix, $params);
 
-        if ($this->content !== NULL) {
-            return $this->content;
-        }
-
         $this->content = new stdClass;
         $this->content->footer = '';
         $this->content->items = array();
         $this->content->icons = array();
-        if(!isset($this->config)) {
+        if (!isset($this->config)) {
             $this->config = new stdClass;
         }
         $out = array();
@@ -80,7 +97,7 @@ class block_courseinfo extends block_list {
         $attributes = array(
             'class' => 'info-fieldname',
         );
-        if(!isset($this->config->displayfields)) {
+        if (!isset($this->config->displayfields)) {
             $default = get_config('block_courseinfo', 'defaultfields');
             $final = explode(',', $default);
             $this->config->displayfields = $final;
@@ -92,7 +109,7 @@ class block_courseinfo extends block_list {
                 $attributes['data-fieldid'] = $formfield->field->id;
                 $name = format_string($formfield->field->fullname);
                 $this->content->items[] = html_writer::tag('span', $name, $attributes) . ': ' . $formfield->display_data();
-            }   
+            }
         }
         return $this->content;
     }
